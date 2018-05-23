@@ -1,0 +1,18 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] aws_instance.ec2" [label = "aws_instance.ec2", shape = "box"]
+		"[root] aws_security_group.web" [label = "aws_security_group.web", shape = "box"]
+		"[root] provider.aws" [label = "provider.aws", shape = "diamond"]
+		"[root] aws_instance.ec2" -> "[root] aws_security_group.web"
+		"[root] aws_security_group.web" -> "[root] provider.aws"
+		"[root] aws_security_group.web" -> "[root] var.server_port"
+		"[root] meta.count-boundary (count boundary fixup)" -> "[root] output.public_dns"
+		"[root] output.public_dns" -> "[root] aws_instance.ec2"
+		"[root] provider.aws (close)" -> "[root] aws_instance.ec2"
+		"[root] root" -> "[root] meta.count-boundary (count boundary fixup)"
+		"[root] root" -> "[root] provider.aws (close)"
+	}
+}
+
